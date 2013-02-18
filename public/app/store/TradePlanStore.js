@@ -2,12 +2,14 @@ Ext.define('NodeExtJs.store.TradePlanStore', {
     extend: 'Ext.data.Store',
 
     autoLoad: true,
-    fields: ['name', 'summary'],
+    autoSync: false,
+    fields: ['_id', 'name', 'summary'],
 
     // Data removed, instead using proxy:
     proxy: {
-        type: 'ajax',
+        type: 'rest',
         url: '/tradeplans',
+        model: 'NodeExtJs.model.TradePlan',
         reader: {
             type: 'json',
             root: 'data',

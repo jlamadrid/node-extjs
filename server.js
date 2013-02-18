@@ -53,6 +53,51 @@ app.get('/tradeplans', function (req, res) {
     });
 });
 
+app.put('/tradeplans/:id', function(req, res){
+    TradePlan.find({_id: req.params.id}, function (err, tradeplans) {
+        // update db
+        var tradeplan = tradeplans[0];
+        tradeplan.set(req.body);
+        tradeplan.save(function (err) {
+            res.contentType('json');
+            res.json({
+                success: !err,
+                data: req.body
+            });
+        });
+    });
+});
+
+app.post('/tradeplans', function (req, res) {
+    var newTradePlan = new TradePlan();
+    var newTradePlanData = req.body;
+
+    // remove the id which the client sends since it is a new TradePlan
+    delete newTradePlanData['_id'];  //we want MongoDB to generate a new ID for the new TradePlan,
+                                     // so we delete the bogus one we got from the client, and
+                                     // then the _id field will automatically be created when
+                                     // the new TradePlan is saved to the database.
+
+    newTradePlan.set(newTradePlanData);
+    newTradePlan.save(function (err, tradeplan) {
+        res.contentType('json');
+        res.json({
+            success: !err,
+            data: tradeplan
+        });
+    });
+});
+
+app.del('/tradeplans/:id', function(req, res){
+    TradePlan.remove({_id: req.params.id}, function (err, tradePlan) {
+        res.contentType('json');
+        res.json({
+            success: !err,
+            data: []
+        });
+    });
+});
+
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
