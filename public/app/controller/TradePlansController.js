@@ -1,11 +1,25 @@
+/*
+ http://docs.sencha.com/ext-js/4-1/#!/api/Ext.app.Controller
+ */
 Ext.define("NodeExtJs.controller.TradePlansController", {
     extend: 'Ext.app.Controller',
 
+    /*
+     Views are managed by Controllers, so it makes sense to keep those dependencies here.
+     Each Controller simply needs to list the Views it uses and they will be automatically loaded
+     */
     views: ['TradePlansView'],
     models: ['TradePlan'],
     stores: ['TradePlanStore'],
 
+    /*
+     Called before the Application's launch function is executed so gives a hook point to run any code
+     before your Viewport is created.
+     */
     init: function () {
+        console.log('Initialized NodeExtJs.controller.TradePlansController');
+
+        //http://docs.sencha.com/ext-js/4-1/#!/api/Ext.app.Controller-method-control
         this.control({
             'TradePlansView': {
                 render: this.onEditorRender,
